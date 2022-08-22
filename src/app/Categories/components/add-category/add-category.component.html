@@ -1,0 +1,21 @@
+<div class="row">
+    <div class="col-md-12">
+        <h3>Add Category</h3>
+        <form [formGroup]="categoryForm" (ngSubmit)="onAddCategory()">
+            <div class="my-3">
+                <label>Title</label>
+                <input type="text" class="form-control" formControlName="title">
+            </div>
+            <div class="my-3">
+                <label>Status</label>
+                <select class="form-control" formControlName="status">
+                    <option value="active">Active</option>
+                    <option value="inactive">InActive</option>
+                </select>
+            </div>
+            <div class="my-3">
+                <button class="btn btn-primary btn-sm">Add Category</button>
+            </div>
+        </form>
+    </div>
+</div>

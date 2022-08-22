@@ -1,0 +1,20 @@
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Title</th>
+            <th>Category</th>
+            <th>Body</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let post of posts">
+            <td>{{post.id}}</td>
+            <td>{{post.title}}</td>
+            <td>{{post.category}}</td>
+            <td>{{post.body}}</td>
+            <td><a [routerLink]="[post.id,'edit']" class="btn btn-warning btn-sm mx-1">Edit Post</a><button class="btn btn-danger btn-sm mx-1" (click)="onDeletePost(post.id)">Delete Post</button></td>
+        </tr>
+    </tbody>
+</table>
