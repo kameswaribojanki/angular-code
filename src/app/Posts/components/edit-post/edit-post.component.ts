@@ -10,58 +10,67 @@ import { PostService } from '../../services/post.service';
 @Component({
   selector: 'app-edit-post',
   templateUrl: './edit-post.component.html',
-  styleUrls: ['./edit-post.component.css']
+  styleUrls: ['./edit-post.component.css'],
 })
 export class EditPostComponent implements OnInit {
-  postId:string="";
-  title:string="";
-  category:string="";
-  body:string="";
-  postForm=new FormGroup({
+  postId: string = '';
+  title: string = '';
+  category: string = '';
+  body: string = '';
+  postForm = new FormGroup({
     title: new FormControl(''),
-    category:new FormControl(''),
+    category: new FormControl(''),
     body: new FormControl(''),
-  })
-  categories:ICategory[]=[];
-  constructor(private route:ActivatedRoute, private postService:PostService, private messageService:MessageService,private categoryService:CategoryService, private router:Router) { 
-
-  }
+  });
+  categories: ICategory[] = [];
+  constructor(
+    private route: ActivatedRoute,
+    private postService: PostService,
+    private messageService: MessageService,
+    private categoryService: CategoryService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
-    this.categoryService.getCategories().subscribe(data=>{
-      
-      this.categories=data;
+    this.categoryService.getCategories().subscribe((data) => {
+      this.categories = data;
     });
-    this.postId=this.route.snapshot.params['id'];
+    this.postId = this.route.snapshot.params['id'];
     console.log(this.postId);
-    this.postService.getPostsById(this.postId).subscribe(data=>{
+    this.postService.getPostsById(this.postId).subscribe((data) => {
       console.log(data);
-      this.title=data.title;
-      this.category=data.category;
-      this.body=data.body;
+      this.title = data.title;
+      this.category = data.category;
+      this.body = data.body;
       this.postForm.setValue({
-        title:data.title,
-        category:data.category,
-        body:data.body
-      })
-    })
+        title: data.title,
+        category: data.category,
+        body: data.body,
+      });
+    });
   }
-  onEditPost(){
-    this.postService.editPost(this.postForm.value as IPost, this.postId).subscribe(data=>{
-      // this.getPost();
-      this.messageService.setSuccessMessage("post updated successfully");
-      this.router.navigate(['/posts']);
-    })
+  onEditPost() {
+    this.postService
+      .editPost(this.postForm.value as IPost, this.postId)
+      .subscribe((data) => {
+        // this.getPost();
+        this.postService.setEditPost(true);
+        this.messageService.setSuccessMessage('post updated successfully');
+        this.router.navigate(['/posts']);
+      });
   }
   // getPost(){
   //   this.categoryService.getCategories().subscribe(data=>{
   //     this.categories=data;
   //   });
   // }
-  canExit(){
-    if(this.postForm.value['title']!==this.title || this.postForm.value['category']!==this.title || this.postForm.value['body']!==this.body){
-    
-      if(confirm('are you sure you want to leave this page')){
+  canExit() {
+    if (
+      this.postForm.value['title'] !== this.title ||
+      this.postForm.value['category'] !== this.title ||
+      this.postForm.value['body'] !== this.body
+    ) {
+      if (confirm('are you sure you want to leave this page')) {
         return true;
       }
       return false;
